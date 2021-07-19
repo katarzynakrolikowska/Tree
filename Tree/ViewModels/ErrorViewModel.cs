@@ -1,6 +1,6 @@
 using System;
 
-namespace Tree.Models
+namespace Tree.ViewModels
 {
     public class ErrorViewModel
     {
