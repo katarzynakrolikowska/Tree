@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tree.Abstarction;
 using Tree.Data;
+using Tree.Services;
 
 namespace Tree
 {
@@ -34,6 +36,9 @@ namespace Tree
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<INodeService, NodeService>();
+
             services.AddControllersWithViews();
         }
 
