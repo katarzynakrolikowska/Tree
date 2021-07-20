@@ -11,11 +11,10 @@ namespace Tree.ViewModels
     {
         [Required]
         [StringLength(50)]
-        [Display(Name = "Nazwa")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Węzeł nadrzędny")]
+        [Display(Name = "Parent node")]
         public int? ParentNodeId { get; set; }
 
         public IEnumerable<SelectListItem> NodeList { get; set; }

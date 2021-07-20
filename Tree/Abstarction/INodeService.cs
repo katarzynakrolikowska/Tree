@@ -10,6 +10,10 @@ namespace Tree.Abstarction
     {
         IEnumerable<Node> GetAll();
 
+        Node GetItem(int id);
+
+        int GetNodesCount();
+
         void Add(Node node);
     }
 }

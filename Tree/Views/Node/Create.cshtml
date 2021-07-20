@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "Nowy węzeł";
+    ViewData["Title"] = "New node";
 }
 
 @section Scripts {
@@ -30,9 +30,8 @@
                     <label asp-for="ParentNodeId"></label>
                 </div>
                 <div class="col-8">
-                    @Html.DropDownListFor(m => m.ParentNodeId, Model.NodeList, "Wybierz węzeł nadrzędny",
-                   new { @class = "form-control" })
-                    <span asp-validation-for="ParentNodeId" class="text-danger"></span>
+                    @Html.DropDownListFor(m => m.ParentNodeId, Model.NodeList,
+                   new { @class = "form-control", disabled = "disabled" })
                 </div>
             </div>
 

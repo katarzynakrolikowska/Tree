@@ -23,7 +23,9 @@ namespace Tree.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var count = this.nodeService.GetNodesCount();
+
+            return View(count > 0);
         }
 
         public IActionResult GetAll()
@@ -37,22 +39,18 @@ namespace Tree.Controllers
             return Json(new { data = vm });
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
             var vm = new NodeCreateViewModel();
-            var nodes = nodeService.GetAll();
+            var node = nodeService.GetItem(id);
 
-            if (nodes == null || !nodes.Any())
+            if (node == null)
             {
                 vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = "brak", Value = "0" } };
             }
             else 
             {
-                vm.NodeList = nodes.Select(m => new SelectListItem()
-                {
-                    Text = m.Name,
-                    Value = m.Id.ToString()
-                });
+                vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = node.Name, Value = node.Id.ToString(), Selected = node.Id == id } };
             }
             
 
@@ -61,13 +59,13 @@ namespace Tree.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(NodeCreateViewModel vm)
+        public IActionResult Create(int id, NodeCreateViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 var node = new Node();
                 node.Name = vm.Name;
-                node.ParentNodeId = vm.ParentNodeId == 0 ? null : vm.ParentNodeId;
+                node.ParentNodeId = id == 0 ? null : id;
 
                 this.nodeService.Add(node);
 

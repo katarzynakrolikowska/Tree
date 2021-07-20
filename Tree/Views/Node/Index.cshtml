@@ -1,11 +1,15 @@
 ﻿
+@model bool
+
 @{
     ViewData["Title"] = "Tree";
 
 }
 
-
-<a class="text-dark" asp-area="" asp-controller="Node" asp-action="Create">New</a>
+@if (!Model)
+{
+    <a class="btn btn-primary" asp-area="" asp-controller="Node" asp-action="Create">New</a>
+}
 
 
 <div id="nodes"></div>

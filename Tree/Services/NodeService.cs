@@ -22,6 +22,16 @@ namespace Tree.Services
            return this.dbContext.Nodes.ToList();
         }
 
+        public Node GetItem(int id)
+        {
+            return this.dbContext.Nodes.Find(id);
+        }
+
+        public int GetNodesCount()
+        {
+            return this.dbContext.Nodes.Count();
+        }
+
         public void Add(Node node)
         {
             this.dbContext.Nodes.Add(node);
