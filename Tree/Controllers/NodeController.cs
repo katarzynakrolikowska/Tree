@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using Tree.ViewModels;
 
 namespace Tree.Controllers
 {
+    [Authorize]
     public class NodeController : Controller
     {
         private readonly INodeService nodeService;
@@ -21,9 +23,18 @@ namespace Tree.Controllers
 
         public IActionResult Index()
         {
-            var vm = new NodeViewModel();
+            return View();
+        }
 
-            return View(vm);
+        public IActionResult GetAll()
+        {
+            var nodes = nodeService.GetAll().ToList();
+            var mainNode = nodes.FirstOrDefault(n => !n.ParentNodeId.HasValue);
+            var vm = new NodeViewModel(mainNode);
+
+            vm.SetChilds(nodes);
+
+            return Json(new { data = vm });
         }
 
         public IActionResult Create()

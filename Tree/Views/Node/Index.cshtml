@@ -1,10 +1,16 @@
 ﻿
-@*@model Tree.ViewModels.NodeViewModel*@
-
-
 @{
     ViewData["Title"] = "Tree";
+
 }
 
 
-<a class="text-dark" asp-area="" asp-controller="Node" asp-action="Create">Nowy</a>
+<a class="text-dark" asp-area="" asp-controller="Node" asp-action="Create">New</a>
+
+
+<div id="nodes"></div>
+
+
+@section Scripts {
+    <script src="~/js/node.js"></script>
+}
