@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tree.Abstarction;
 using Tree.Models;
+using Tree.Utilities.Extensions;
 using Tree.ViewModels;
 
 namespace Tree.Controllers
@@ -30,13 +31,20 @@ namespace Tree.Controllers
 
         public IActionResult GetAll()
         {
+            IActionResult result = NotFound();
+
             var nodes = nodeService.GetAll().ToList();
-            var mainNode = nodes.FirstOrDefault(n => !n.ParentNodeId.HasValue);
-            var vm = new NodeViewModel(mainNode);
 
-            vm.SetChilds(nodes);
+            if (!nodes.IsNullOrEmpty())
+            {
+                var mainNode = nodes.FirstOrDefault(n => !n.ParentNodeId.HasValue);
+                var vm = new NodeViewModel(mainNode);
 
-            return Json(new { data = vm });
+                vm.SetChilds(nodes);
+                result = Json(new { data = vm });
+            }
+
+            return result;
         }
 
         public IActionResult Create(int id)
@@ -52,7 +60,6 @@ namespace Tree.Controllers
             {
                 vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = node.Name, Value = node.Id.ToString(), Selected = node.Id == id } };
             }
-            
 
             return View(vm);
         }
@@ -73,8 +80,26 @@ namespace Tree.Controllers
             }
             else
             {
+                var node = nodeService.GetItem(id);
+
+                if (node == null)
+                {
+                    vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = "brak", Value = "0" } };
+                }
+                else
+                {
+                    vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = node.Name, Value = node.Id.ToString(), Selected = node.Id == id } };
+                }
                 return View(vm);
             }
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var isDeleted = this.nodeService.Delete(id);
+
+            return Json(new { success = isDeleted });
         }
     }
 }
