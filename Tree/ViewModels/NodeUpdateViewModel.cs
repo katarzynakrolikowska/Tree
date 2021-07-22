@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace Tree.ViewModels
 {
-    public class NodeCreateViewModel : NodeBaseViewModel
+    public class NodeUpdateViewModel : NodeBaseViewModel
     {
+        public int Id { get; set; }
+
+        [Required]
         [Display(Name = "Parent node")]
         public int? ParentNodeId { get; set; }
     }

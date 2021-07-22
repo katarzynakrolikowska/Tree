@@ -10,11 +10,15 @@ namespace Tree.Abstarction
     {
         IEnumerable<Node> GetAll();
 
+        IEnumerable<Node> GetAllWithoutChilds(int id);
+
         Node GetItem(int id);
 
         int GetNodesCount();
 
         void Add(Node node);
+
+        void Update(Node node);
 
         bool Delete(int id);
     }

@@ -23,6 +23,15 @@ namespace Tree.Services
            return this.dbContext.Nodes.ToList();
         }
 
+        public IEnumerable<Node> GetAllWithoutChilds(int id)
+        {
+            var childsIds = GetChilds(id).Select(n => n.Id).ToList();
+
+            return this.dbContext.Nodes
+                .Where(e => !childsIds.Contains(e.Id) && e.Id != id)
+                .ToList();
+        }
+
         public Node GetItem(int id)
         {
             return this.dbContext.Nodes.Find(id);
@@ -38,6 +47,19 @@ namespace Tree.Services
             this.dbContext.Nodes.Add(node);
 
             this.dbContext.SaveChanges();
+        }
+
+        public void Update(Node node)
+        {
+            var entity = this.dbContext.Nodes.Find(node.Id);
+
+            if (entity != null)
+            {
+                entity.Name = node.Name;
+                entity.ParentNodeId = node.ParentNodeId;
+
+                this.dbContext.SaveChanges();
+            }
         }
 
         public bool Delete(int id)
