@@ -33,7 +33,7 @@ namespace Tree.Controllers
         {
             IActionResult result = NotFound();
 
-            var nodes = nodeService.GetAll().ToList();
+            var nodes = this.nodeService.GetAll().ToList();
 
             if (!nodes.IsNullOrEmpty())
             {
@@ -50,16 +50,8 @@ namespace Tree.Controllers
         public IActionResult Create(int id)
         {
             var vm = new NodeCreateViewModel();
-            var node = nodeService.GetItem(id);
 
-            if (node == null)
-            {
-                vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = "brak", Value = "0" } };
-            }
-            else 
-            {
-                vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = node.Name, Value = node.Id.ToString(), Selected = node.Id == id } };
-            }
+            vm.NodeList = GetNodeSelectList(id);
 
             return View(vm);
         }
@@ -68,6 +60,8 @@ namespace Tree.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(int id, NodeCreateViewModel vm)
         {
+            IActionResult result = null;
+
             if (ModelState.IsValid)
             {
                 var node = new Node();
@@ -76,22 +70,16 @@ namespace Tree.Controllers
 
                 this.nodeService.Add(node);
 
-                return RedirectToAction(nameof(Index));
+                result = RedirectToAction(nameof(Index));
             }
             else
             {
-                var node = nodeService.GetItem(id);
-
-                if (node == null)
-                {
-                    vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = "brak", Value = "0" } };
-                }
-                else
-                {
-                    vm.NodeList = new List<SelectListItem>() { new SelectListItem() { Text = node.Name, Value = node.Id.ToString(), Selected = node.Id == id } };
-                }
-                return View(vm);
+                vm.NodeList = GetNodeSelectList(id);
+                
+                result = View(vm);
             }
+
+            return result;
         }
 
         [HttpDelete]
@@ -100,6 +88,18 @@ namespace Tree.Controllers
             var isDeleted = this.nodeService.Delete(id);
 
             return Json(new { success = isDeleted });
+        }
+
+        private IEnumerable<SelectListItem> GetNodeSelectList(int id)
+        {
+            var nodeList = new List<SelectListItem>();
+
+            var node = this.nodeService.GetItem(id);
+
+            var item = node == null ? new SelectListItem() { Text = "brak", Value = "0" } : new SelectListItem() { Text = node.Name, Value = node.Id.ToString(), Selected = node.Id == id };
+            nodeList.Add(item);
+
+            return nodeList;
         }
     }
 }
