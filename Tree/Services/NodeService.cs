@@ -37,6 +37,11 @@ namespace Tree.Services
             return this.dbContext.Nodes.Find(id);
         }
 
+        public Node GetMainItem()
+        {
+            return this.dbContext.Nodes.FirstOrDefault(e => !e.ParentNodeId.HasValue);
+        }
+
         public int GetNodesCount()
         {
             return this.dbContext.Nodes.Count();

@@ -49,11 +49,22 @@ namespace Tree.Controllers
 
         public IActionResult Create(int id)
         {
-            var vm = new NodeCreateViewModel();
+            IActionResult result = null;
 
-            vm.NodeList = GetNodeSelectList(id);
+            if (id > 0 || (id == 0 && this.nodeService.GetMainItem() == null))
+            {
+                var vm = new NodeCreateViewModel();
 
-            return View(vm);
+                vm.NodeList = GetNodeSelectList(id);
+
+                result = View(vm);
+            }
+            else
+            {
+                result = RedirectToAction(nameof(Index));
+            }
+
+            return result;
         }
 
         [HttpPost]
