@@ -47,11 +47,21 @@ namespace Tree.Services
             return this.dbContext.Nodes.Count();
         }
 
-        public void Add(Node node)
+        public bool Add(Node node)
         {
-            this.dbContext.Nodes.Add(node);
+            var result = false;
+            var mainNode = GetMainItem();
 
-            this.dbContext.SaveChanges();
+            if (node.ParentNodeId.HasValue || (!node.ParentNodeId.HasValue && mainNode == null))
+            {
+                this.dbContext.Nodes.Add(node);
+
+                this.dbContext.SaveChanges();
+
+                result = true;
+            }
+
+            return result;
         }
 
         public void Update(Node node)

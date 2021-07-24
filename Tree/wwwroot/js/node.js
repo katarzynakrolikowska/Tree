@@ -3,7 +3,7 @@
     let node;
 
     $.ajax({
-        url: "/Node/GetAll",
+        url: "/Node/GetMainNodeWithChilds",
         type: "GET",
         contentType: "application/json",
         success: function (data) {

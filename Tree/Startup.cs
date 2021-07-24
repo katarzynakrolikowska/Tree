@@ -13,7 +13,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tree.Abstarction;
 using Tree.Data;
+using Tree.Facades;
 using Tree.Services;
+
 
 namespace Tree
 {
@@ -44,7 +46,11 @@ namespace Tree
 
             services.AddScoped<INodeService, NodeService>();
 
+            services.AddScoped<NodeFacade>();
+
             services.AddControllersWithViews();
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

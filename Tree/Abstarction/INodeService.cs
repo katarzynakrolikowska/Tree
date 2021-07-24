@@ -18,7 +18,7 @@ namespace Tree.Abstarction
 
         int GetNodesCount();
 
-        void Add(Node node);
+        bool Add(Node node);
 
         void Update(Node node);
 
